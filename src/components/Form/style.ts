@@ -1,9 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { media } from "../../styles/media";
 import { theme } from "../../styles/theme";
 
 export const ContainerSectionForm = styled.div`
-  min-height: 146px;
   background-color: ${theme.colors.primary};
   display: flex;
   flex-direction: column;
@@ -11,6 +10,7 @@ export const ContainerSectionForm = styled.div`
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
+  min-height: 18vh;
 `;
 
 export const TitleForm = styled.h3`
@@ -70,7 +70,8 @@ export const InputStyled = styled.input`
 export const ButtonSubmitForm = styled.button`
   background: #000000;
   border-radius: 5px;
-  width: 140px;
+  width: 100%;
+  max-width: 139px;
   height: 48px;
   font-style: normal;
   font-weight: bold;
@@ -84,4 +85,44 @@ export const ButtonSubmitForm = styled.button`
     transform: scale(1.1);
     background-color: #2e2929;
   }
+`;
+
+interface IMessage {
+  isMessageDisplayedSuccess?: boolean;
+  isMessageDisplayedWarning?: boolean;
+  messageSuccess?: boolean;
+  messageError?: boolean;
+}
+
+const isMessageDisplayedWarning = css`
+  color: rgb(248 93 82);
+`;
+
+const isMessageDisplayedSuccess = css`
+  color: #00cc99;
+`;
+
+export const TextMessageStyled = styled.span<IMessage>`
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  ${({ messageSuccess }) =>
+    messageSuccess &&
+    css`
+       {
+        ${() => isMessageDisplayedSuccess};
+      }
+    `}
+  ${({ messageError }) =>
+    messageError &&
+    css`
+       {
+        ${() => isMessageDisplayedWarning};
+      }
+    `}
 `;

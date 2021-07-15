@@ -1,5 +1,6 @@
 import { Banner } from "../../components/Banner";
 import { CountdownTimer } from "../../components/CountdownTimer";
+import { Footer } from "../../components/Footer";
 import { Form } from "../../components/Form";
 import { Header } from "../../components/Header";
 import { ProductsList } from "../../components/ProductsList";
@@ -14,6 +15,7 @@ export const Home = () => {
       <CountdownTimer expiryTimestamp={Number(time)} />
       <ProductsList />
       <Form />
+      <Footer />
     </>
   );
 };

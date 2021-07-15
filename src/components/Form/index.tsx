@@ -1,10 +1,11 @@
-// import { useState } from "react";
+import { useState, FormEvent } from "react";
 import {
   ButtonSubmitForm,
   ContainerSectionForm,
   FormContainer,
   InputStyled,
   TitleForm,
+  TextMessageStyled,
 } from "./style";
 
 interface IFormData {
@@ -12,13 +13,19 @@ interface IFormData {
   email: FormDataEntryValue | null;
 }
 
-export const Form = () => {
-  //   const [messageSuccess, setMessageSuccess] = useState(false);
-  //   const [messageError, setMessageError] = useState(false);
+interface IHandleSubmit {
+  event: FormEvent<HTMLFormElement> & EventTarget;
+  preventDefault(): EventTarget;
+  currentTarget: HTMLFormElement;
+}
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement> & EventTarget) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+export const Form = () => {
+  const [messageSuccess, setMessageSuccess] = useState(false);
+  const [messageError, setMessageError] = useState(false);
+
+  const handleSubmit = (event: IHandleSubmit & FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
 
     const formValues = {
       name: formData.get("name"),
@@ -36,18 +43,24 @@ export const Form = () => {
       if (!hasEmail) {
         hasData.push(formValues);
         localStorage.setItem("users", JSON.stringify(hasData));
-        // setMessageSuccess(true);
-        console.log("cadastro realizado com sucesso");
+        setMessageSuccess(true);
+        setTimeout(() => {
+          setMessageSuccess(false);
+        }, 2300);
       } else {
-        console.log("email existe");
-        // setMessageError(true);
+        setMessageError(true);
+        setTimeout(() => {
+          setMessageError(false);
+        }, 2300);
       }
     } else {
       localStorage.setItem("users", JSON.stringify(formValues));
-      //   setMessageSuccess(true);
-      console.log("cadastro realizado com sucesso");
+      setMessageSuccess(true);
+      setTimeout(() => {
+        setMessageSuccess(false);
+      }, 2300);
     }
-    e.currentTarget.reset();
+    event.currentTarget.reset();
   };
 
   return (
@@ -70,6 +83,17 @@ export const Form = () => {
         />
         <ButtonSubmitForm type="submit">Cadastrar</ButtonSubmitForm>
       </FormContainer>
+      {messageSuccess && (
+        <TextMessageStyled messageSuccess={messageSuccess}>
+          Seu cadastro foi realizado com sucesso! A partir de agora você
+          receberá novidades e ofertas exclusivas.
+        </TextMessageStyled>
+      )}
+      {messageError && (
+        <TextMessageStyled messageError={messageError}>
+          E-mail já cadastrado! Tente novamente.
+        </TextMessageStyled>
+      )}
     </ContainerSectionForm>
   );
 };
